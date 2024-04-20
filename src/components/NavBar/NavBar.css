@@ -1,0 +1,45 @@
+.navbar {
+    overflow: hidden;
+    width: 100vw;
+}
+
+.navbar__item {
+    float: left;
+    display: block;
+}
+
+.navbar-container {
+    background-color: #37996b;
+    display: flex;
+    flex-direction: row;
+    color: #f2f2f2;
+    text-align: center;
+    align-items: center;
+    justify-content: space-evenly;
+    height: 3.75rem;
+}
+
+.navbar__item--active {
+    text-align: center;
+    background-color: #4CAf50;
+    color: white;
+}
+
+.navbar-container button {
+    background: none;
+}
+
+.navbar__logo {
+    margin: 0;
+}
+
+.navbar__searchbar input{
+    justify-self: center;
+}
+
+.navbar__links a {
+    margin-left: 25px;
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
+}

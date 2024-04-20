@@ -1,0 +1,19 @@
+.search-bar-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1;
+    input {
+        outline: 0;
+        border: none;
+        background-color: white;
+        border-radius: 4px;
+        height: 40px;
+        color: black;
+    }
+    button {
+        background-color: inherit;
+        color: red;
+        height: 40px;
+    }
+}
