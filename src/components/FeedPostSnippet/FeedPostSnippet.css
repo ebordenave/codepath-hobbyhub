@@ -1,0 +1,21 @@
+
+
+.feed_container__card {
+    width: 55vw;
+    height: 10vh;
+    background-color: #232323;
+    border: 1px solid #343434;
+    border-radius: 8px;
+    margin: 15px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+}
+
+.feed_container__card a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+}

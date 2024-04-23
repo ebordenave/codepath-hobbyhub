@@ -1,0 +1,16 @@
+.card__container {
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    padding-top: 25px;
+}
+
+.card {
+    width: 55vw;
+    height: 10vh;
+    background-color: #232323;
+    border: 1px solid #343434;
+    border-radius: 8px;
+    margin:auto;
+    color: white;
+}

@@ -3,3 +3,11 @@
   margin: 0 auto;
   text-align: center
 }
+
+.feed_wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  flex-direction: column;
+}
