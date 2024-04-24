@@ -1,13 +1,14 @@
 import "./ParentPost.css";
 import { useEffect, useState, useCallback} from "react";
 import supabase from "../../config/client.js";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
 export const ParentPost = ({ post }) => {
     const {uuid} = useParams()
+    const navigate = useNavigate()
     const [vote, setVotes] = useState(0);
 
-    const updateVotes = async (newVoteCount) => {
+    const updateVotes = useCallback(async (newVoteCount) => {
         try {
             const { data, error} = await supabase
                 .from("posts")
@@ -24,7 +25,7 @@ export const ParentPost = ({ post }) => {
         } catch (error) {
             console.error("Error fetching votes", error.message)
         }
-    }
+    })
 
     const fetchVotes = useCallback(async () => {
         try {
@@ -60,6 +61,40 @@ export const ParentPost = ({ post }) => {
         setVotes(newCount);
     }, [vote, updateVotes]);
 
+    const handleDelete = async () => {
+        const { data, error } = await supabase
+            .from("posts")
+            .delete()
+            .eq("uuid", uuid)
+            .select();
+
+        if (error) {
+            console.log(error);
+            return;
+        }
+
+        if (data) {
+            console.log(data);
+            navigate("/")
+        }
+    };
+
+    const handleEdit = async () => {
+        const {data, error} = await supabase
+            .from("posts")
+            .update({title:title,description: description, image_url: image_url})
+            .eq("uuid",uuid)
+
+        if (error) {
+            console.error("Error updating title, description, image_url")
+            return
+        }
+        if (data) {
+            console.log(data)
+            // navigate() I think I need an edit page here
+        }
+    }
+
     return (
         <div className="card__container">
             <div className="card">
@@ -68,6 +103,10 @@ export const ParentPost = ({ post }) => {
                 {vote}
                 <button onClick={increment}>Upvote</button>
                 <button onClick={decrement}>Downvote</button>
+            </div>
+            <div className="edit-delete-buttons-container">
+                <button onClick={handleEdit}>Edit</button>
+                <button onClick={handleDelete}>Delete</button>
             </div>
         </div>
     );

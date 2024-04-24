@@ -1,7 +1,14 @@
 import "./NavBar.css"
 import {SearchBar} from "../SearchBar/SearchBar.jsx";
 import {Link} from "react-router-dom";
-export const NavBar = () => {
+import {useState} from "react";
+export const NavBar = ({setSearchInput}) => {
+
+  const handleOnChange = (e) => {
+    e.preventDefault()
+    setSearchInput(e.target.value)
+  }
+
   return (
     <div>
       <nav className='navbar-container'>
@@ -9,7 +16,7 @@ export const NavBar = () => {
           <h2>Hobby Hub</h2>
         </div>
         <div className="navbar__searchbar">
-          <SearchBar />
+          <SearchBar onChange={handleOnChange}/>
         </div>
         <div className="navbar__links">
           <Link to="/">Home</Link>

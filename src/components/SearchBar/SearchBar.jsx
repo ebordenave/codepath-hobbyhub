@@ -2,7 +2,7 @@
 import "./SearchBar.css";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
-export const SearchBar = () => {
+export const SearchBar = ({onChange}) => {
 
   // const handleMouseEnter = () => {
   //   setIsDropDownVisible(true);
@@ -44,7 +44,7 @@ export const SearchBar = () => {
 
   return (
     <div className="search-bar-container">
-      <input type="search" placeholder="Search..."/>
+      <input type="search" placeholder="Search By Title..." onChange={onChange}/>
       <FontAwesomeIcon icon="fa-solid fa-magnifying-glass" />
     </div>
   );
