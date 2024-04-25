@@ -1,46 +1,65 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import supabase from "../config/client.js";
 import "./Pages.css"
 import { v4 as uuidv4 } from "uuid";
-import { useNavigate } from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 
-export const Create = () => {
+export const Create = ({post: initialPost}) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [image_url, setImageURL] = useState("");
-  const [formError, setFormError] = useState(null);
+  // const [formError, setFormError] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation()
+  const post = location.state?.post
+
+
+  useEffect(() => {
+    if (initialPost) {
+      setTitle(initialPost.title)
+      setDescription(initialPost.description)
+      setImageURL(initialPost.image_url)
+      navigate("/")
+    }
+  }, [initialPost]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!title || !description || !image_url) {
-      setFormError(new Error("Please Fill in Fields"));
-      return;
-    }
-
     const uuid = uuidv4();
 
-    const { data, error } = await supabase
-      .from("posts")
-      .insert([{ title, description, image_url, uuid }])
-      .select();
+    // if (!title || !description || !image_url) {
+    //   setFormError(new Error("Please Fill in Fields"));
+    //   return;
 
-    if (error) {
-      console.log(error);
-      setFormError("Error in Creating FeedPostSnippet");
+    if (initialPost) {
+      // Updating an existing post here
+      const {data, error} = await supabase
+          .from("posts")
+          .update({title, description, image_url})
+          .eq("uuid", uuid)
+
+      if (error) {
+        console.error("Error editing post")
+      }
+      if (data) {
+        console.log(`Editing this data => ${data}`)
+      }
+    } else {
+      //   Create new post here
+      const {data, error} = await supabase
+          .from("posts")
+          .insert([{title, description, image_url}])
+          .eq("uuid", uuid);
+
+      if (error) {
+        console.error("Error editing post")
+      }
+      if (data) {
+        console.log(`Editing this data => ${data}`)
+      }
     }
+  }
 
-    if (data) {
-      console.log(data);
-      setTitle("");
-      setDescription("");
-      setImageURL("");
-      navigate(`/post/${uuid}`);
-    }
-
-    console.log(title, description, image_url, uuid);
-  };
 
   return (
     <>
@@ -77,7 +96,7 @@ export const Create = () => {
                 onChange={(e) => setDescription(e.target.value)}
               />
             </div>
-            <button>Create Post</button>
+            <button type="submit">{post ? "Update" : "Create"} Post</button>
           </form>
         </div>
       </div>
