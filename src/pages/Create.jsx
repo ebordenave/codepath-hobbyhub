@@ -35,27 +35,30 @@ export const Create = ({post: initialPost}) => {
       // Updating an existing post here
       const {data, error} = await supabase
           .from("posts")
-          .update({title, description, image_url})
+          .update({title, description, image_url, uuid})
           .eq("uuid", uuid)
+
 
       if (error) {
         console.error("Error editing post")
       }
       if (data) {
-        console.log(`Editing this data => ${data}`)
+        // console.log(`Editing this data => ${data}`)
+        navigate("/")
       }
     } else {
       //   Create new post here
       const {data, error} = await supabase
           .from("posts")
-          .insert([{title, description, image_url}])
+          .insert([{title, description, image_url, uuid}])
           .eq("uuid", uuid);
 
       if (error) {
         console.error("Error editing post")
       }
       if (data) {
-        console.log(`Editing this data => ${data}`)
+        // console.log(`Editing this data => ${data}`)
+        navigate("/")
       }
     }
   }
