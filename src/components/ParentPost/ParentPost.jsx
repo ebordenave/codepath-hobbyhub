@@ -2,10 +2,43 @@ import "./ParentPost.css";
 import { useEffect, useState, useCallback} from "react";
 import supabase from "../../config/client.js";
 import {useNavigate, useParams} from "react-router-dom";
+import {Comment} from "../Comment/Comment.jsx";
+import Icon from '@mdi/react'
+import {mdiPencil, mdiThumbDown, mdiThumbUp, mdiTrashCanOutline} from "@mdi/js";
+import {calculateTimeAgo} from "../../utils/calculateTimeAgo.js";
 
 export const ParentPost = ({ post }) => {
+
+    // const timeAgo = calculateTimeAgo(post.created_at)
+    // console.log(post)
+
+    const [comments, setComments] = useState([])
     const {uuid} = useParams()
     const navigate = useNavigate()
+
+
+    const fetchComments = async () => {
+
+        try {
+        const {data, error} = await supabase
+            .from("comments")
+            .select('*')
+            .eq('post_id', post.uuid)
+
+            if (error){
+                console.error("Error fetching comments: ", error)
+                return
+            }
+            setComments(data)
+        } catch (e) {
+            console.error('Error fetcing comments:',e)
+        }
+
+    }
+
+    useEffect(() => {
+        fetchComments()
+    }, [fetchComments]);
 
     const [vote, setVotes] = useState(0);
 
@@ -80,34 +113,29 @@ export const ParentPost = ({ post }) => {
         }
     };
 
-    // const handleEdit = async () => {
-    //     const {data, error} = await supabase
-    //         .from("posts")
-    //         .update({title:title,description: description, image_url: image_url})
-    //         .eq("uuid",uuid)
-    //
-    //     if (error) {
-    //         console.error("Error updating title, description, image_url")
-    //         return
-    //     }
-    //     if (data) {
-    //         console.log(data)
-    //         // navigate() I think I need an edit page here
-    //     }
-    // }
-
     return (
         <div className="card__container">
             <div className="card">
                 {/* eslint-disable-next-line react/prop-types */}
-                Title: {post.title} Description {post.description} Image URL {post.image_url}
-                {vote}
-                <button onClick={increment}>Upvote</button>
-                <button onClick={decrement}>Downvote</button>
-            </div>
-            <div className="edit-delete-buttons-container">
-                <button onClick={()=> navigate('/create', {state: {post}})}>Edit</button>
-                <button onClick={handleDelete}>Delete</button>
+                {/*{timeAgo}*/}
+                <div>{(vote ?? 0) >= 0 ? `${vote} likes` : `${vote} dislikes` }</div>
+                <strong>{post.title}</strong>
+                <div>{post.description}</div>
+                <img src={post.image_url} alt=""/>
+                <div className="upvote-downvote-buttons">
+                    <button onClick={increment}><Icon path={mdiThumbUp} /></button>
+                    <button onClick={decrement}><Icon path={mdiThumbDown} /></button>
+                    <button onClick={()=> navigate('/create', {state: {post}})}><Icon path={mdiPencil}/></button>
+                    <button onClick={handleDelete}><Icon path={mdiTrashCanOutline}/></button>
+                </div>
+                <div>
+                    <Comment postUuid={post.uuid} onCommentAdded={fetchComments} existingContent={post.description}/>
+                    {comments.map((comment) => (
+                        <div key={comment.id} className="comments">
+                            <p>- {comment.content}</p>
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
     );

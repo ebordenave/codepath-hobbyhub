@@ -1,0 +1,20 @@
+
+.comment-box textarea {
+    resize: none;
+    width: 100%;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.comment-box button {
+    background-color: #37996b;
+    border-color: #3ecf8e;
+    margin: 10px;
+}
+
+.comment-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}

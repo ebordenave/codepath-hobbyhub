@@ -45,7 +45,6 @@ export const SearchBar = ({onChange}) => {
   return (
     <div className="search-bar-container">
       <input type="search" placeholder="Search By Title..." onChange={onChange}/>
-      <FontAwesomeIcon icon="fa-solid fa-magnifying-glass" />
     </div>
   );
 };

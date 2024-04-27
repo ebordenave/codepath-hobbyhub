@@ -15,17 +15,19 @@ export const Create = ({post: initialPost}) => {
 
 
   useEffect(() => {
-    if (initialPost) {
-      setTitle(initialPost.title)
-      setDescription(initialPost.description)
-      setImageURL(initialPost.image_url)
-      navigate("/")
+    if (post) {
+      setTitle(post.title)
+      setDescription(post.description)
+      setImageURL(post.image_url)
+      // navigate("/")
     }
-  }, [initialPost]);
+  }, [post]);
 
   const handleSubmit = async (e) => {
+
     e.preventDefault();
-    const uuid = uuidv4();
+    const uuid = uuidv4()
+    const imageUrl = image_url || "no_image"
 
     // if (!title || !description || !image_url) {
     //   setFormError(new Error("Please Fill in Fields"));
@@ -44,13 +46,13 @@ export const Create = ({post: initialPost}) => {
       }
       if (data) {
         // console.log(`Editing this data => ${data}`)
-        navigate("/")
+        navigate("/post/&{uuid}")
       }
     } else {
       //   Create new post here
       const {data, error} = await supabase
           .from("posts")
-          .insert([{title, description, image_url, uuid}])
+          .insert([{title, description, image_url:imageUrl, uuid}])
           .eq("uuid", uuid);
 
       if (error) {
@@ -58,7 +60,7 @@ export const Create = ({post: initialPost}) => {
       }
       if (data) {
         // console.log(`Editing this data => ${data}`)
-        navigate("/")
+        navigate(`/post/${uuid}`)
       }
     }
   }
@@ -95,7 +97,7 @@ export const Create = ({post: initialPost}) => {
               <textarea
                 id="textarea"
                 name="content"
-                placeholder="Content (Optional)"
+                placeholder="Content"
                 onChange={(e) => setDescription(e.target.value)}
               />
             </div>

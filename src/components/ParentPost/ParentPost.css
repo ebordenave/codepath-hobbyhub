@@ -7,10 +7,51 @@
 
 .card {
     width: 55vw;
-    height: 10vh;
     background-color: #232323;
     border: 1px solid #343434;
     border-radius: 8px;
     margin:auto;
     color: white;
+    display: grid;
+    min-height: 10vh;
+
+    grid-template-columns: [col-start] 1fr [col-end];
+    grid-template-rows: [row1-start] 1fr [row1-end] 1fr [row2-end] 1fr [row3-end];
+    grid-template-areas:
+        "row1-start col1-start"
+        "row2-start col1-start"
+        "row3-start col1-start"
+        "row1-start col2-start"
+        "row2-start col2-start"
+        "row3-start col2-start";
+}
+
+.upvote-downvote-buttons {
+    justify-content: space-evenly;
+    display: flex;
+    padding: 15px;
+    position: static;
+}
+.upvote-downvote-buttons button {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border-color: #3ecf8e;
+    background-color: #37996b;
+
+}
+
+.card img {
+    width: 90%;
+    height: auto;
+    display: block;
+    margin: auto;
+}
+
+.comments {
+    background-color: #1c1c1c;
+    border-color: #252525;
+    margin: 5px;
+    border-radius: 10px;
+
 }
