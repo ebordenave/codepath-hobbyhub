@@ -38,7 +38,7 @@ export const Create = ({post: initialPost}) => {
       const {data, error} = await supabase
           .from("posts")
           .update({title, description, image_url, uuid})
-          .eq("uuid", uuid)
+          .eq("uuid", initialPost.uuid)
 
 
       if (error) {
